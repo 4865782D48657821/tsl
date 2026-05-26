@@ -1,0 +1,20 @@
+CREATE TABLE ti_gateway_provider (
+  ti_gateway_provider_id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL DEFAULT '',
+  service_name VARCHAR(255) NOT NULL DEFAULT '',
+  config_endpoint VARCHAR(255) DEFAULT NULL COMMENT 'ServiceSupplyPoint',
+  active TINYINT(1) DEFAULT NULL COMMENT 'http://uri.etsi.org/TrstSvc/Svcstatus/inaccord',
+  certificate BLOB DEFAULT NULL,
+  issuer VARCHAR(255) DEFAULT NULL COMMENT 'ServiceSupplyPoint',
+  authorization_endpoint VARCHAR(255) DEFAULT NULL,
+  token_endpoint VARCHAR(255) DEFAULT NULL,
+  jwks_uri VARCHAR(255) DEFAULT NULL,
+  response_types_supported VARCHAR(255) DEFAULT NULL,
+  created_date TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
+  updated_date TIMESTAMP(6) NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP(6),
+  version BIGINT(20) NOT NULL,
+  PRIMARY KEY (ti_gateway_provider_id),
+  UNIQUE KEY service_name_idx (service_name),
+  KEY active_idx (active),
+  KEY version_idx (version)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

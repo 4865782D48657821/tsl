@@ -1,0 +1,41 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: tsl-mysql
+    environment:
+      MYSQL_DATABASE: tsl
+      MYSQL_USER: tsl
+      MYSQL_PASSWORD: tsl
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tsl-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/tsl?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USERNAME: tsl
+      DB_PASSWORD: tsl
+      TRUSTED_LIST_URL: ${TRUSTED_LIST_URL:-http://download-testref.crl.ti-dienste.de/TSL-ECC-test/ECC-RSA_TSL-test.xml}
+      GATEWAY_PROVIDER_SYNCHRONIZATION_CRON: ${GATEWAY_PROVIDER_SYNCHRONIZATION_CRON:-*/10 * * * * *}
+      GATEWAY_PROVIDER_SYNCHRONIZATION_ZONE: ${GATEWAY_PROVIDER_SYNCHRONIZATION_ZONE:-Europe/Berlin}
+      GATEWAY_PROVIDER_SYNCHRONIZATION_CONNECT_TIMEOUT: ${GATEWAY_PROVIDER_SYNCHRONIZATION_CONNECT_TIMEOUT:-PT10S}
+      GATEWAY_PROVIDER_SYNCHRONIZATION_READ_TIMEOUT: ${GATEWAY_PROVIDER_SYNCHRONIZATION_READ_TIMEOUT:-PT20S}
+      GATEWAY_PROVIDER_METADATA_FETCH_CONCURRENCY: ${GATEWAY_PROVIDER_METADATA_FETCH_CONCURRENCY:-4}
+    restart: unless-stopped
+
+volumes:
+  mysql-data:
