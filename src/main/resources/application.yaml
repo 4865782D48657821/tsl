@@ -1,0 +1,23 @@
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/tsl?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
+    username: ${DB_USERNAME:tsl}
+    password: ${DB_PASSWORD:tsl}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+
+gateway-provider-synchronization:
+  trusted-list-url: ${TRUSTED_LIST_URL:http://download-testref.crl.ti-dienste.de/TSL-ECC-test/ECC-RSA_TSL-test.xml}
+  cron: ${GATEWAY_PROVIDER_SYNCHRONIZATION_CRON:*/10 * * * * *}
+  zone: ${GATEWAY_PROVIDER_SYNCHRONIZATION_ZONE:Europe/Berlin}
+  connect-timeout: ${GATEWAY_PROVIDER_SYNCHRONIZATION_CONNECT_TIMEOUT:PT10S}
+  read-timeout: ${GATEWAY_PROVIDER_SYNCHRONIZATION_READ_TIMEOUT:PT20S}
+  metadata-fetch-concurrency: ${GATEWAY_PROVIDER_METADATA_FETCH_CONCURRENCY:4}

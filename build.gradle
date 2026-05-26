@@ -1,0 +1,80 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+    id 'jacoco'
+    id 'org.springframework.boot' version '3.3.5'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'de.tsl'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+checkstyle {
+    toolVersion = '10.17.0'
+    configDirectory = file("$rootDir/config/checkstyle")
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-mysql'
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+    implementation 'org.glassfish.jaxb:jaxb-runtime'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
+    testImplementation 'com.h2database:h2'
+    testImplementation 'org.bouncycastle:bcprov-jdk18on:1.80'
+    testImplementation 'org.bouncycastle:bcpkix-jdk18on:1.80'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-testcontainers'
+    testImplementation 'org.testcontainers:junit-jupiter'
+    testImplementation 'org.testcontainers:mysql'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+    testLogging {
+        events 'failed', 'skipped'
+        exceptionFormat 'full'
+    }
+    finalizedBy tasks.named('jacocoTestReport')
+}
+
+tasks.named('jacocoTestReport') {
+    dependsOn tasks.named('test')
+    reports {
+        xml.required = true
+        csv.required = false
+        html.required = true
+    }
+}
+
+tasks.named('javadoc') {
+    options.encoding = 'UTF-8'
+    if (options instanceof org.gradle.external.javadoc.StandardJavadocDocletOptions) {
+        options.addBooleanOption('html5', true)
+        options.addBooleanOption('notimestamp', true)
+        options.links('https://docs.oracle.com/en/java/javase/21/docs/api/')
+        options.windowTitle = 'TSL Ingester JavaDoc'
+        options.docTitle = 'TSL Ingester JavaDoc'
+    }
+}
+
+tasks.register('lint') {
+    group = 'verification'
+    description = 'Runs static lint checks.'
+    dependsOn tasks.named('checkstyleMain'), tasks.named('checkstyleTest')
+}

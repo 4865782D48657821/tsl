@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TrustServiceStatusList xmlns="http://uri.etsi.org/02231/v2#" xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+  <SchemeInformation>
+    <TSLSequenceNumber>42</TSLSequenceNumber>
+  </SchemeInformation>
+  <TrustServiceProviderList>
+    <TrustServiceProvider>
+      <TSPInformation>
+        <TSPName>
+          <Name xml:lang="de">Provider Alpha</Name>
+        </TSPName>
+      </TSPInformation>
+      <TSPServices>
+        <TSPService>
+          <ServiceInformation>
+            <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/unspecified</ServiceTypeIdentifier>
+            <ServiceName>
+              <Name xml:lang="de">service-alpha</Name>
+            </ServiceName>
+            <ServiceSupplyPoints>
+              <ServiceSupplyPoint>https://alpha.example/config</ServiceSupplyPoint>
+            </ServiceSupplyPoints>
+            <ServiceDigitalIdentity>
+              <DigitalId>
+                <X509Certificate>AQID</X509Certificate>
+              </DigitalId>
+              <DigitalId>
+                <X509Certificate>BAUG</X509Certificate>
+              </DigitalId>
+            </ServiceDigitalIdentity>
+            <ServiceStatus>http://uri.etsi.org/TrstSvc/Svcstatus/inaccord</ServiceStatus>
+            <ServiceInformationExtensions>
+              <Extension>
+                <ExtensionValue>oid_tigw_zugm</ExtensionValue>
+              </Extension>
+            </ServiceInformationExtensions>
+          </ServiceInformation>
+        </TSPService>
+        <TSPService>
+          <ServiceInformation>
+            <ServiceTypeIdentifier>http://uri.etsi.org/TrstSvc/Svctype/other</ServiceTypeIdentifier>
+            <ServiceName>
+              <Name xml:lang="de">service-ignored</Name>
+            </ServiceName>
+            <ServiceSupplyPoints>
+              <ServiceSupplyPoint>https://ignored.example/config</ServiceSupplyPoint>
+            </ServiceSupplyPoints>
+            <ServiceDigitalIdentity>
+              <DigitalId>
+                <X509Certificate>BAUG</X509Certificate>
+              </DigitalId>
+            </ServiceDigitalIdentity>
+            <ServiceStatus>http://uri.etsi.org/TrstSvc/Svcstatus/inaccord</ServiceStatus>
+            <ServiceInformationExtensions>
+              <Extension>
+                <ExtensionValue>oid_tigw_zugm</ExtensionValue>
+              </Extension>
+            </ServiceInformationExtensions>
+          </ServiceInformation>
+        </TSPService>
+      </TSPServices>
+    </TrustServiceProvider>
+  </TrustServiceProviderList>
+</TrustServiceStatusList>
