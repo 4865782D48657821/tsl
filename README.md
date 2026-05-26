@@ -143,13 +143,6 @@ git tag v1.0.0
 git push origin v1.0.0
 ```
 
-If you want merges to be blocked until the workflow passes, enable branch protection in GitHub
-and mark the `Build` job as a required status check.
-
-For hosted documentation, enable GitHub Pages in the repository settings and select `GitHub
-Actions` as the source. After that, every successful push to `main` publishes the generated
-JavaDoc site automatically.
-
 ## Docs
 
 - [Architecture Notes](docs/architecture.md)
